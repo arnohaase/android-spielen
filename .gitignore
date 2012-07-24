@@ -16,4 +16,4 @@ gen/
 local.properties
 
 *~
-
+.metadata
