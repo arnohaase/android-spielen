@@ -19,6 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".PersonListActivity"
+            android:label="@string/title_activity_personlist">
+        </activity>
         
         <service android:name="PersonService"></service>
     </application>

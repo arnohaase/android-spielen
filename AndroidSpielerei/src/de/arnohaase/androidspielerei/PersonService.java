@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class PersonService extends IntentService {
 	public PersonService() {
-		super("Name Lookup Service");
+		super("Person Lookup Service");
 	}
 
 	public static final String EXTRAS_KEY_MESSENGER = "MESSENGER";
@@ -25,7 +25,9 @@ public class PersonService extends IntentService {
 			final Messenger messenger = (Messenger) extras.get(EXTRAS_KEY_MESSENGER);
 			final Message msg = Message.obtain();
 			msg.arg1 = Activity.RESULT_OK;
-			msg.obj = "Arno Haase";
+			msg.obj = createPersonsJson();
+
+//			AndroidHttpClient httpClient = AndroidHttpClient.newInstance("Android Probieren");
 			
 			try {
 				messenger.send(msg);
@@ -33,5 +35,23 @@ public class PersonService extends IntentService {
 				Log.w("exception sending message", e);
 			}
 		}
+	}
+	
+	private String createPersonsJson() {
+		final StringBuilder result = new StringBuilder("[");
+		
+		for (int i=0; i<20; i++) {
+			if (i>0) {
+				result.append(",");
+			}
+			result.append (createPersonJson(i));
+		}
+		
+		result.append("]");
+		return result.toString();
+	}
+	
+	private String createPersonJson(int idx) {
+		return "{oid=" + idx + ", firstname:'Arno', lastname:'Haase', sex:'m', address:{street: 'Sesame Street', no: '" + idx + "', zip: '12345', city: 'Dodge City', country: 'Germany'}}";
 	}
 }

@@ -8,10 +8,13 @@ import android.os.Messenger;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-
+	Adapter a;
+	View v;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,5 +39,9 @@ public class MainActivity extends Activity {
     	final Intent intent = new Intent(this, PersonService.class);
     	intent.putExtra(PersonService.EXTRAS_KEY_MESSENGER, new Messenger(handler));
     	Log.w("...", "starting " + startService(intent));
+    }
+    
+    public void onClickPersonList(View view) {
+    	startActivity(new Intent(this, PersonListActivity.class));
     }
 }

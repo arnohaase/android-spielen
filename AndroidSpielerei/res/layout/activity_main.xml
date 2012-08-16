@@ -19,4 +19,13 @@
         android:onClick="onClick"
         android:text="Button"
         />
+
+    <Button
+        android:id="@+id/ButtonPersonList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickPersonList"
+        android:text="Person List"
+        android:layout_below="@id/Button1"
+        />
 </RelativeLayout>
