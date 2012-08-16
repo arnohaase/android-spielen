@@ -1,0 +1,4 @@
+todo
+----
+* service oder worker thread?
+* PersonListActivity: progress bar zentriert, ohne den ganzen Raum auszufuellen

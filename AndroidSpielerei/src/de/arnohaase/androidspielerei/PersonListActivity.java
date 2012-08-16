@@ -13,7 +13,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Messenger;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.ListAdapter;
+import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import de.arnohaase.androidspielerei.util.JsonDecoder;
@@ -43,6 +47,14 @@ public class PersonListActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 
+        final ProgressBar progressBar = new ProgressBar(this);
+        progressBar.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.CENTER));
+        progressBar.setIndeterminate(true);
+        getListView().setEmptyView(progressBar);
+        
+        final ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
+        root.addView(progressBar);
+		
 		final Intent intent = new Intent(this, PersonService.class);
 		intent.putExtra(PersonService.EXTRAS_KEY_MESSENGER, new Messenger(handler));
         Log.i("...", "starting " + startService(intent));
@@ -51,6 +63,10 @@ public class PersonListActivity extends ListActivity {
     private final Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             try {
+                final ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
+                root.removeView(getListView().getEmptyView());
+                getListView().setEmptyView(null);
+                
                 final String rawJson = msg.obj.toString();
                 
                 @SuppressWarnings("unchecked")

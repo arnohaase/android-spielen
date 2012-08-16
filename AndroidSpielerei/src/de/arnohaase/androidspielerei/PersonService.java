@@ -30,6 +30,13 @@ public class PersonService extends IntentService {
 //			AndroidHttpClient httpClient = AndroidHttpClient.newInstance("Android Probieren");
 			
 			try {
+			    // simulate delay, e.g. for database or server access
+                Thread.sleep(1000);
+            } catch (InterruptedException e1) {
+                Log.w(PersonService.class.getName(), e1);
+            }
+			
+			try {
 				messenger.send(msg);
 			} catch (RemoteException e) {
 				Log.w("exception sending message", e);
