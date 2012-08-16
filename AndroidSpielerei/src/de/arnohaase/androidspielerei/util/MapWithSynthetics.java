@@ -7,9 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import android.util.Log;
 
-
+/**
+ * This is a special Map implementation that adds 'synthetic' values, i.e. one can register expressions
+ *  for a given key that are evaluated whenever <code>get()</code> is called with this key. 
+ * 
+ * @author arno
+ */
 public class MapWithSynthetics<K,V> implements Map<K,V> {
 	private final Map<K, V> inner;
 	private final Map<K, Expression<K,V>> synthetics;
