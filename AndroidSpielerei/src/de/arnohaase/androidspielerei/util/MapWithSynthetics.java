@@ -16,7 +16,9 @@ import java.util.Set;
  * @author arno
  */
 public class MapWithSynthetics<K,V> implements Map<K,V>, Serializable {
-	private final Map<K, V> inner;
+    private static final long serialVersionUID = 1L;
+
+    private final Map<K, V> inner;
 	private final Map<K, Expression<K,V>> synthetics;
 
 	public MapWithSynthetics(Map<K, V> inner, Map<K, Expression<K,V>> synthetics) {

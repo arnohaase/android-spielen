@@ -26,12 +26,12 @@ public class PersonService extends IntentService {
 			final Message msg = Message.obtain();
 			msg.arg1 = Activity.RESULT_OK;
 			msg.obj = createPersonsJson();
-
+			
 //			AndroidHttpClient httpClient = AndroidHttpClient.newInstance("Android Probieren");
 			
 			try {
 			    // simulate delay, e.g. for database or server access
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e1) {
                 Log.w(PersonService.class.getName(), e1);
             }
@@ -59,6 +59,11 @@ public class PersonService extends IntentService {
 	}
 	
 	private String createPersonJson(int idx) {
-		return "{oid=" + idx + ", firstname:'Arno " + idx + "', lastname:'Haase', sex:'m', adress:{street: 'Sesame Street', no: '" + idx + "', zip: '12345', city: 'Dodge City', country: 'Germany'}}";
+	    if (idx % 2 == 0) {
+	        return "{oid=" + idx + ", firstname:'Arno " + idx + "', lastname:'Haase', sex:'m', adress:{street: 'Sesame Street', no: '" + idx + "', zip: '12345', city: 'Dodge City', country: 'Germany'}}";
+	    }
+	    else {
+	        return "{oid=" + idx + ", firstname:'Testa " + idx + "', lastname:'Testarossa', sex:'f', adress:{street: 'Sesame Street', no: '" + idx + "', zip: '12345', city: 'Dodge City', country: 'Germany'}}";
+	    }
 	}
 }
