@@ -1,5 +1,6 @@
 package de.arnohaase.androidspielerei;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +15,11 @@ import android.os.Handler;
 import android.os.Messenger;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -57,7 +60,7 @@ public class PersonListActivity extends ListActivity {
 		
 		final Intent intent = new Intent(this, PersonService.class);
 		intent.putExtra(PersonService.EXTRAS_KEY_MESSENGER, new Messenger(handler));
-        Log.i("...", "starting " + startService(intent));
+        Log.i(getClass().getName(), "starting " + startService(intent));
 	}
 	
     private final Handler handler = new Handler() {
@@ -86,5 +89,13 @@ public class PersonListActivity extends ListActivity {
             }
         }
     };
+    
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        Log.i(getClass().getName(), "clicked " + l.getItemAtPosition(position));
+        final Intent intent = new Intent();
+        intent.setClass(this, PersonDetailActivity.class);
+        intent.putExtra(PersonDetailActivity.KEY_EXTRA_DATA, (Serializable) l.getItemAtPosition(position));
+        startActivity(intent);
+    }
 }
  

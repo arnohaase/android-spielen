@@ -1,4 +1,5 @@
 todo
 ----
-* service oder worker thread?
+* service oder worker thread oder data provider?
 * PersonListActivity: progress bar zentriert, ohne den ganzen Raum auszufuellen
+* PersonDetails: Felder

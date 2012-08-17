@@ -25,6 +25,12 @@
             android:label="@string/title_activity_personlist">
         </activity>
         
+        <activity 
+            android:name=".PersonDetailActivity"
+            android:label="@string/title_activity_persondetails"
+            >
+        </activity>
+        
         <service android:name="PersonService"></service>
     </application>
 

@@ -6,4 +6,5 @@
     <string name="title_activity_main">MainActivity</string>
 
     <string name="title_activity_personlist">Personen</string>
+    <string name="title_activity_persondetails">Person</string>
 </resources>

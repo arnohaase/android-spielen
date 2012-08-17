@@ -1,5 +1,6 @@
 package de.arnohaase.androidspielerei.util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -14,7 +15,7 @@ import java.util.Set;
  * 
  * @author arno
  */
-public class MapWithSynthetics<K,V> implements Map<K,V> {
+public class MapWithSynthetics<K,V> implements Map<K,V>, Serializable {
 	private final Map<K, V> inner;
 	private final Map<K, Expression<K,V>> synthetics;
 
@@ -113,5 +114,15 @@ public class MapWithSynthetics<K,V> implements Map<K,V> {
 	
 	public interface Expression<K,V> {
 	    V getValue(Map<K,V> raw);
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+	    return inner.equals(o);
+	}
+	
+	@Override
+	public String toString() {
+	    return "<syn " + inner.toString() + ">";
 	}
 }
