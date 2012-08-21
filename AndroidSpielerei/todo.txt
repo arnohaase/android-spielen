@@ -2,5 +2,21 @@ todo
 ----
 * service oder worker thread oder data provider?
 * PersonListActivity: progress bar zentriert, ohne den ganzen Raum auszufuellen
-* PersonDetails: Felder
-* PersonDetails: verschiedenes Layout für horizontal / vertikal
+* Person Details: schoeneres Layout
+  * PersonDetails: verschiedenes Layout für horizontal / vertikal
+  * Rahmen fuer Adresse
+  * Street + No, ZIP + City jeweils in die selbe Zeile?
+  * 36dp?!
+  * Spacer statt leerem TextView --> support library, min version (in AndroidManifest.xml) back to 8
+  * textNoSuggestions fuer 'country' --> trotzdem suggestions?!
+* Geburtstag fuer Person ergaenzen
+  * JSON standard for day?
+* Person aendern, speichern, loeschen, neu anlegen
+  * refresh der Liste nach Aenderungen
+* Suchmaske fuer Personen
+* Animation von Liste zu Detail: von rechts "einfliegen" (?)
+* Geo-Daten-Bezug --> Karte anzeigen
+  * Hintergrundbild fuer PersonDetails?
+  * nur Google Maps oder auch anderer (offline?) Provider?
+* Authentication (!)
+* add action bar

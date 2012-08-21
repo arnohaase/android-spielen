@@ -11,4 +11,9 @@
     <string name="lbl_person_firstname">First Name</string>
     <string name="lbl_person_lastname">Last Name</string>
     <string name="lbl_person_sex">Sex</string>
+    <string name="lbl_person_address_street">Street</string>
+    <string name="lbl_person_address_streetnumber">Number</string>
+    <string name="lbl_person_address_zip">ZIP Code</string>
+    <string name="lbl_person_address_city">City</string>
+    <string name="lbl_person_address_country">Country</string>
 </resources>

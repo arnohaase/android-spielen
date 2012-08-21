@@ -4,10 +4,11 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import de.arnohaase.androidspielerei.person.Person;
 import de.arnohaase.androidspielerei.person.Sex;
 
 
@@ -16,7 +17,6 @@ public class PersonDetailActivity extends Activity {
     
     private ArrayAdapter<Sex> sexAdapter;
  
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +26,6 @@ public class PersonDetailActivity extends Activity {
         @SuppressWarnings("unchecked")
         final Map<String, Object> data = (Map<String, Object>) getIntent().getExtras().get(KEY_EXTRA_DATA);
 
-        Log.i("...", data.toString());
-        
         setContentView(R.layout.activity_person_details);
         initWidgets();
         
@@ -36,31 +34,33 @@ public class PersonDetailActivity extends Activity {
 
     private void initWidgets() {
         final Spinner spinner = (Spinner) findViewById(R.id.sex);
-        
         sexAdapter.add(Sex.m);
         sexAdapter.add(Sex.f);
         spinner.setAdapter(sexAdapter);
+
+        AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.country);
+        textView.setAdapter(new PersonCountryAutocompleteAdapter(this));
     }
     
-    private void dataToGui(Map<String, Object> person) {
-        ((TextView) findViewById(R.id.firstname)).setText(String.valueOf(person.get("firstname")));
-        ((TextView) findViewById(R.id.lastname)).setText(String.valueOf(person.get("lastname")));
-        ((Spinner) findViewById(R.id.sex)).setSelection(sexAdapter.getPosition(Sex.valueOf((String) person.get("sex"))));
+    private TextView findTextView(int id) {
+        return (TextView) findViewById(id);
+    }
+    
+    private Spinner findSpinner(int id) {
+        return (Spinner) findViewById(id);
+    }
+    
+    private void dataToGui(Map<String, Object> personData) {
+        final Person person = new Person(personData);
+        
+        findTextView(R.id.firstname).setText(person.getFirstname());
+        findTextView(R.id.lastname).setText(person.getLastname());
+        findSpinner(R.id.sex).setSelection(sexAdapter.getPosition(person.getSex()));
+        
+        findTextView(R.id.street).setText(person.getAddress().getStreet());
+        findTextView(R.id.streetnumber).setText(person.getAddress().getNo());
+        findTextView(R.id.zip).setText(person.getAddress().getZip());
+        findTextView(R.id.city).setText(person.getAddress().getCity());
+        findTextView(R.id.country).setText(person.getAddress().getCountry());
     }
 }
-
-/*
-
-08-17 19:49:26.040: I/...(5230): {
-lastname=Haase, 
-sex=m, 
-adress={zip=12345, no=8, country=Germany, city=Dodge City, street=Sesame Street}, 
-firstname=Arno 8, 
-oid=8, 
-
-name=Arno 8 Haase, 
-adrString=Sesame Street 8, Dodge City
-}
-
-
-*/

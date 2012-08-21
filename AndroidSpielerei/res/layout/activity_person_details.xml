@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
     android:orientation="vertical"
+    android:padding="5dp"
     >
 
     <TextView
@@ -16,7 +17,7 @@
         android:id="@+id/firstname"
         android:inputType="textPersonName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         />
 
     <TextView
@@ -28,7 +29,7 @@
         android:id="@+id/lastname"
         android:inputType="textPersonName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         />
 
     <TextView
@@ -39,6 +40,73 @@
     <Spinner
         android:id="@+id/sex"
         android:layout_width="match_parent"
+        android:layout_height="36dp"
+        />
+     
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp" 
+        />
+    
+    
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/lbl_person_address_street"
+        />
+    <EditText
+        android:id="@+id/street"
+        android:inputType="textPostalAddress"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        />
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_person_address_streetnumber"
+        />
+    <EditText
+        android:id="@+id/streetnumber"
+        android:inputType="textPostalAddress"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        />
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_person_address_zip"
+        />
+    <EditText
+        android:id="@+id/zip"
+        android:inputType="textPostalAddress"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        />
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_person_address_city"
+        />
+    <EditText
+        android:id="@+id/city"
+        android:inputType="textPostalAddress"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        />
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_person_address_country"
+        />
+    <AutoCompleteTextView
+        android:id="@+id/country"
+        android:inputType="textNoSuggestions"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:completionThreshold="1"
         />
 </LinearLayout>

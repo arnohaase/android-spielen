@@ -19,7 +19,6 @@ public class PersonService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		Log.w(PersonService.class.getName(), "onHandleIntent");
 		final Bundle extras = intent.getExtras();
 		if (extras != null) {
 			final Messenger messenger = (Messenger) extras.get(EXTRAS_KEY_MESSENGER);
@@ -60,10 +59,10 @@ public class PersonService extends IntentService {
 	
 	private String createPersonJson(int idx) {
 	    if (idx % 2 == 0) {
-	        return "{oid=" + idx + ", firstname:'Arno " + idx + "', lastname:'Haase', sex:'m', adress:{street: 'Sesame Street', no: '" + idx + "', zip: '12345', city: 'Dodge City', country: 'Germany'}}";
+	        return "{oid=" + idx + ", firstname:'Arno " + idx + "', lastname:'Haase', sex:'m', address:{street: 'Sesame Street', no: '" + idx + "', zip: '12345', city: 'Dodge City', country: 'Germany'}}";
 	    }
 	    else {
-	        return "{oid=" + idx + ", firstname:'Testa " + idx + "', lastname:'Testarossa', sex:'f', adress:{street: 'Sesame Street', no: '" + idx + "', zip: '12345', city: 'Dodge City', country: 'Germany'}}";
+	        return "{oid=" + idx + ", firstname:'Testa " + idx + "', lastname:'Testarossa', sex:'f', address:{street: 'Sesame Street', no: '" + idx + "', zip: '12345', city: 'Dodge City', country: 'Germany'}}";
 	    }
 	}
 }
