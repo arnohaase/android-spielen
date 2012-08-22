@@ -26,6 +26,10 @@ public class MapWithSynthetics<K,V> implements Map<K,V>, Serializable {
         this.synthetics = synthetics;
     }
 
+	public Map<K,V> getInner() {
+	    return inner;
+	}
+	
     public void clear() {
 		inner.clear();
 	}

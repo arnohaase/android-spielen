@@ -1,14 +1,15 @@
 package de.arnohaase.androidspielerei;
 
+import de.arnohaase.androidspielerei.person.PersonService;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Messenger;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
+
 
 public class MainActivity extends Activity {
 	View v;
@@ -20,12 +21,6 @@ public class MainActivity extends Activity {
     	Log.w(MainActivity.class.getName(), "onCreate");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
-    
     private final Handler handler = new Handler() {
     	public void handleMessage(android.os.Message msg) {
     		Toast.makeText(MainActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();

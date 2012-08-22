@@ -16,38 +16,38 @@ public final class Address {
         this.data = data;
     }
 
-    public String getStreet() {
-        return (String) data.get(KEY_STREET);
+    public CharSequence getStreet() {
+        return (CharSequence) data.get(KEY_STREET);
     }
-    public void setStreet(String street) {
+    public void setStreet(CharSequence street) {
         data.put(KEY_STREET, street);
     }
 
-    public String getNo() {
-        return (String) data.get(KEY_NO);
+    public CharSequence getNo() {
+        return (CharSequence) data.get(KEY_NO);
     }
-    public void setNo(String no) {
+    public void setNo(CharSequence no) {
         data.put(KEY_NO, no);
     }
     
-    public String getZip() {
-        return (String) data.get(KEY_ZIP);
+    public CharSequence getZip() {
+        return (CharSequence) data.get(KEY_ZIP);
     }
-    public void setZip(String zip) {
+    public void setZip(CharSequence zip) {
         data.put(KEY_ZIP, zip);
     }
     
-    public String getCity() {
-        return (String) data.get(KEY_CITY);
+    public CharSequence getCity() {
+        return (CharSequence) data.get(KEY_CITY);
     }
-    public void setCity(String city) {
+    public void setCity(CharSequence city) {
         data.put(KEY_CITY, city);
     }
     
-    public String getCountry() {
-        return (String) data.get(KEY_COUNTRY);
+    public CharSequence getCountry() {
+        return (CharSequence) data.get(KEY_COUNTRY);
     }
-    public void setCountry(String country) {
+    public void setCountry(CharSequence country) {
         data.put(KEY_COUNTRY, country);
     }
 }

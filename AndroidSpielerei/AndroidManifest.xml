@@ -31,7 +31,7 @@
             >
         </activity>
         
-        <service android:name="PersonService"></service>
+        <service android:name=".person.PersonService"></service>
     </application>
 
 </manifest>

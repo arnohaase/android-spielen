@@ -14,6 +14,8 @@ import java.util.Map;
  * @author arno
  */
 public final class Person {
+    public static final String KEY_OID="oid";
+    
     public static final String KEY_FIRSTNAME="firstname";
     public static final String KEY_LASTNAME="lastname";
     public static final String KEY_SEX="sex";
@@ -42,17 +44,21 @@ public final class Person {
         address.setData((Map<String, Object>) data.get(KEY_ADDRESS));
     }
 
-    public String getFirstname() {
-        return (String) data.get(KEY_FIRSTNAME);
+    public Integer getOid() {
+        return (Integer) data.get(KEY_OID);
     }
-    public void setFirstname(String firstname) {
+    
+    public CharSequence getFirstname() {
+        return (CharSequence) data.get(KEY_FIRSTNAME);
+    }
+    public void setFirstname(CharSequence firstname) {
         data.put(KEY_FIRSTNAME, firstname);
     }
     
-    public String getLastname() {
-        return (String) data.get(KEY_LASTNAME);
+    public CharSequence getLastname() {
+        return (CharSequence) data.get(KEY_LASTNAME);
     }
-    public void setLastname(String lastname) {
+    public void setLastname(CharSequence lastname) {
         data.put(KEY_LASTNAME, lastname);
     }
     

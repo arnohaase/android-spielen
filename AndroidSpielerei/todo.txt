@@ -19,4 +19,8 @@ todo
   * Hintergrundbild fuer PersonDetails?
   * nur Google Maps oder auch anderer (offline?) Provider?
 * Authentication (!)
-* add action bar
+* Activity.onCreateOptionsMenu: "implementations should always call through to the default implementation" --> ?!?!?
+* Activity Fragments
+* Ablauf in 'Person Details' ist hakelig
+
+StatusBar notifications --> file:///home/arno/libs/android-sdk-linux/docs/guide/topics/ui/notifiers/notifications.html
