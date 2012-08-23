@@ -4,6 +4,10 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_main">MainActivity</string>
 
+    
+    <string name="app_label">Person Sample</string>
+    <string name="search_hint">Search Persons</string>
+
     <string name="menu_person_new">New Person</string>
     <string name="menu_person_save">Save Person</string>
     <string name="menu_person_delete">Delete Person</string>

@@ -1,18 +1,21 @@
 todo
 ----
-* service oder worker thread oder data provider?
-* PersonListActivity: progress bar zentriert, ohne den ganzen Raum auszufuellen
+* PersonListActivity: 
+  * "progress bar" zentriert, ohne den ganzen Raum auszufuellen
+  * Person neu anlegen
+  * refresh
+  * Sortier-Reihenfolge
 * Person Details: schoeneres Layout
   * PersonDetails: verschiedenes Layout für horizontal / vertikal
+    * Activity Fragments
   * Rahmen fuer Adresse
   * Street + No, ZIP + City jeweils in die selbe Zeile?
   * 36dp?!
   * Spacer statt leerem TextView --> support library, min version (in AndroidManifest.xml) back to 8
   * textNoSuggestions fuer 'country' --> trotzdem suggestions?!
+  * Ablauf 'glatter'
 * Geburtstag fuer Person ergaenzen
   * JSON standard for day?
-* Person aendern, speichern, loeschen, neu anlegen
-  * refresh der Liste nach Aenderungen
 * Suchmaske fuer Personen
 * Animation von Liste zu Detail: von rechts "einfliegen" (?)
 * Geo-Daten-Bezug --> Karte anzeigen
@@ -20,7 +23,5 @@ todo
   * nur Google Maps oder auch anderer (offline?) Provider?
 * Authentication (!)
 * Activity.onCreateOptionsMenu: "implementations should always call through to the default implementation" --> ?!?!?
-* Activity Fragments
-* Ablauf in 'Person Details' ist hakelig
 
-StatusBar notifications --> file:///home/arno/libs/android-sdk-linux/docs/guide/topics/ui/notifiers/notifications.html
+* StatusBar notifications --> file:///home/arno/libs/android-sdk-linux/docs/guide/topics/ui/notifiers/notifications.html

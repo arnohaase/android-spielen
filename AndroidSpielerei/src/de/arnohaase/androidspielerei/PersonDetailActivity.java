@@ -59,7 +59,9 @@ public class PersonDetailActivity extends Activity {
                 public void onSuccess(Boolean result) {
                     //TODO i18n
                     Toast.makeText(PersonDetailActivity.this, "Person saved: " + person.getFirstname() + " " + person.getLastname(), Toast.LENGTH_SHORT).show();
+                    //TODO move this broadcast into PersonAccessor - but since it depends on a Context, how best to provide that?
                     LocalBroadcastManager.getInstance(PersonDetailActivity.this).sendBroadcast(new Intent(PersonListActivity.INTENT_ACTION_PERSON_LIST_CHANGED));
+                    finish();
                 }
 
                 public void onFailure(Exception reason) {

@@ -28,4 +28,13 @@
         android:text="Person List"
         android:layout_below="@id/Button1"
         />
+
+    <Button
+        android:id="@+id/ButtonSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickSearch"
+        android:text="Search Persons"
+        android:layout_below="@id/ButtonPersonList"
+        />
 </RelativeLayout>
