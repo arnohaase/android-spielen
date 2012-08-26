@@ -14,6 +14,7 @@ todo
   * Spacer statt leerem TextView --> support library, min version (in AndroidManifest.xml) back to 8
   * textNoSuggestions fuer 'country' --> trotzdem suggestions?!
   * Ablauf 'glatter'
+  * Telefonwahl starten
 * Geburtstag fuer Person ergaenzen
   * JSON standard for day?
 * Suchmaske fuer Personen
@@ -25,3 +26,6 @@ todo
 * Activity.onCreateOptionsMenu: "implementations should always call through to the default implementation" --> ?!?!?
 
 * StatusBar notifications --> file:///home/arno/libs/android-sdk-linux/docs/guide/topics/ui/notifiers/notifications.html
+
+* Sprach-Erkennung erfordert aktive Online-Datenverbindung?!
+* SearchDialog, wenn SearchWidget im Overflow-Bereich der ActionBar ist --> ?!?!?

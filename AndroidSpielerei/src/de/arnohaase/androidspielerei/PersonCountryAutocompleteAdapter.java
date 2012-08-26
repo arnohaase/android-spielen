@@ -14,7 +14,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-import de.arnohaase.androidspielerei.person.PersonAccessor;
+import de.arnohaase.androidspielerei.dummy.PersonAccessor;
 import de.arnohaase.androidspielerei.util.ExecutorHelper;
 
 

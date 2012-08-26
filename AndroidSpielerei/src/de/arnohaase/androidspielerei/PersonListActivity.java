@@ -1,59 +1,32 @@
 package de.arnohaase.androidspielerei;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.app.ListActivity;
+import android.app.LoaderManager;
+import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.Loader;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
-import android.view.Gravity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView.LayoutParams;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
-import de.arnohaase.androidspielerei.person.Address;
-import de.arnohaase.androidspielerei.person.Person;
-import de.arnohaase.androidspielerei.person.PersonAccessor;
-import de.arnohaase.androidspielerei.util.AsyncOperationFinishedListener;
-import de.arnohaase.androidspielerei.util.ExecutorHelper;
-import de.arnohaase.androidspielerei.util.MapWithSynthetics;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
+import android.widget.SimpleCursorAdapter;
+import de.arnohaase.androidspielerei.provider.PersonProvider;
 
 
-public class PersonListActivity extends ListActivity {
+public class PersonListActivity extends ListActivity { // implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String INTENT_ACTION_PERSON_LIST_CHANGED = "PERSON_LIST_CHANGED";
-    
-    private static final Map<String, MapWithSynthetics.Expression<String, Object>> synthetics = new HashMap<String, MapWithSynthetics.Expression<String, Object>>();
-    
-    private boolean requiresRefresh=true;
 
-    static {
-        synthetics.put("name", new MapWithSynthetics.Expression<String, Object>() {
-            public Object getValue(Map<String, Object> raw) {
-                return raw.get(Person.KEY_FIRSTNAME) + " " + raw.get(Person.KEY_LASTNAME);
-            }
-        });
-        synthetics.put("adrString", new MapWithSynthetics.Expression<String, Object>() {
-            public Object getValue(Map<String, Object> raw) {
-                @SuppressWarnings("unchecked")
-                final Map<String, Object> address = (Map<String, Object>) raw.get(Person.KEY_ADDRESS);
-
-                return address.get(Address.KEY_STREET) + " " + address.get(Address.KEY_NO) + ", " + address.get(Address.KEY_CITY);
-            }
-        });
-    }
+    private boolean requiresRefresh=false;
 
     private final BroadcastReceiver personListChangedReceiver = new BroadcastReceiver() {
         @Override
@@ -61,94 +34,108 @@ public class PersonListActivity extends ListActivity {
             requiresRefresh = true;
         }
     };
+
+    // This is the Adapter being used to display the list's data.
+    SimpleCursorAdapter mAdapter;
+
+    // If non-null, this is the current filter the user has provided.
+    String mCurSearchText;
+
+    final LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor> () {
+        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            return new CursorLoader(PersonListActivity.this, Uri.withAppendedPath(PersonProvider.URI_PERSON_SEARCH_PREFIX, mCurSearchText), null, null, null, null);
+        }
+
+        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+            mAdapter.swapCursor(data);
+        }
+
+        public void onLoaderReset(Loader<Cursor> loader) {
+            mAdapter.swapCursor(null);
+        }    
+    };
     
-    @Override
-    protected void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final ProgressBar progressBar = new ProgressBar(this);
-        progressBar.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.CENTER));
-        progressBar.setIndeterminate(true);
-        getListView().setEmptyView(progressBar);
+        // Give some text to display if there is no data.  In a real
+        // application this would come from a resource.
+//        setEmptyText("No phone numbers");
 
-        final ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
-        root.addView(progressBar);
+        // Create an empty adapter we will use to display the loaded data.
+        mAdapter = new SimpleCursorAdapter(this,
+                android.R.layout.simple_list_item_2, null,
+                new String[] { SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_TEXT_2 },
+                new int[] { android.R.id.text1, android.R.id.text2 }, 0);
+        setListAdapter(mAdapter);
 
-        getListView().setPadding(5, 5, 5, 5); //TODO set this more elegantly and as 5dp - but how?!
+        // Start out with a progress indicator.
+//        setListShown(false);
+
+        // Prepare the loader.  Either re-connect with an existing one or start a new one.
+        getLoaderManager().initLoader(0, null, loaderCallbacks);
 
         final IntentFilter personListChangedFilter = new IntentFilter();
         personListChangedFilter.addAction(INTENT_ACTION_PERSON_LIST_CHANGED);
         LocalBroadcastManager.getInstance(this).registerReceiver(personListChangedReceiver, personListChangedFilter);
-        
-//        new PersonAccessor(ExecutorHelper.createMainThreadExecutor(this)).findAllPersons(personListLoadedListener);
-
-        //		final Intent intent = new Intent(this, PersonService.class);
-        //		intent.putExtra(PersonService.EXTRAS_KEY_MESSENGER, new Messenger(handler));
-        //        Log.i(getClass().getName(), "starting " + startService(intent));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        
+
         LocalBroadcastManager.getInstance(this).unregisterReceiver(personListChangedReceiver);
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
 
         doRefreshIfRequired();
     }
-    
+
     private void doRefreshIfRequired() {
         if (! requiresRefresh) {
             return;
         }
-        
-        new PersonAccessor(ExecutorHelper.createMainThreadExecutor(this)).findAllPersons(personListLoadedListener);
+
+        getLoaderManager().restartLoader(0, null, loaderCallbacks);
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.personlist, menu);
+        final SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setOnQueryTextListener(new OnQueryTextListener() {
+            public boolean onQueryTextChange(String newText) {
+                final String newSearchText = !TextUtils.isEmpty(newText) ? newText : null;
+                
+                // only search if the text changed
+                if (mCurSearchText == null && newSearchText == null) {
+                    return true;
+                }
+                if (mCurSearchText != null && mCurSearchText.equals(newSearchText)) {
+                    return true;
+                }
+                
+                mCurSearchText = newSearchText;
+                getLoaderManager().restartLoader(0, null, loaderCallbacks);
+                return true;
+            }
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+        });
+
         return true;
     }
 
-
-    private final AsyncOperationFinishedListener<List<Map<String, Object>>> personListLoadedListener = new AsyncOperationFinishedListener<List<Map<String,Object>>>() {
-        public void onSuccess (final List<Map<String, Object>> result) {
-            final ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
-            root.removeView(getListView().getEmptyView());
-            getListView().setEmptyView(null);
-
-            final List<Map<String, Object>> withSynthetics = new ArrayList<Map<String,Object>>();
-            for (Map<String, Object> row: result) {
-                withSynthetics.add(new MapWithSynthetics<String, Object>(row, synthetics));
-            }
-
-            final ListAdapter adapter = 
-                    new SimpleAdapter(PersonListActivity.this, withSynthetics, android.R.layout.two_line_list_item, new String[] {"name", "adrString"}, new int[] {android.R.id.text1, android.R.id.text2});
-
-            setListAdapter(adapter);
-            requiresRefresh = false;
-        }
-
-        public void onFailure(final Exception reason) {
-            Log.e(getClass().getName(), "failed to load person list: " + reason.getMessage());
-            Toast.makeText(PersonListActivity.this, "failed to load person list", Toast.LENGTH_LONG).show(); //TODO i18n --> from resource
-        }
-
-        public void onCancelled() {
-            Toast.makeText(PersonListActivity.this, "canceled loading person list", Toast.LENGTH_LONG).show(); //TODO i18n --> from resource
-        }
-    };
-
-    @SuppressWarnings("unchecked")
     protected void onListItemClick(ListView l, View v, int position, long id) {
         final Intent intent = new Intent();
         intent.setClass(this, PersonDetailActivity.class);
-        intent.putExtra(PersonDetailActivity.KEY_EXTRA_DATA, (Serializable) ((MapWithSynthetics<String, Object>) l.getItemAtPosition(position)).getInner());
+        //TODO
+        intent.putExtra(PersonDetailActivity.KEY_EXTRA_ID, id); //l.get(Serializable) ((MapWithSynthetics<String, Object>) l.getItemAtPosition(position)).getInner());
         startActivity(intent);
     }
 }
+

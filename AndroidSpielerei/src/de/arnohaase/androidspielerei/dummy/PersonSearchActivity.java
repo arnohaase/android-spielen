@@ -1,11 +1,13 @@
-package de.arnohaase.androidspielerei;
+package de.arnohaase.androidspielerei.dummy;
 
 import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
+import android.widget.SimpleCursorAdapter;
+import de.arnohaase.androidspielerei.provider.PersonProvider;
 
 
 public class PersonSearchActivity extends ListActivity {
@@ -22,7 +24,10 @@ public class PersonSearchActivity extends ListActivity {
     }
 
     private void doMySearch(String query) {
-        final ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[] {"a", "b", "c", "d"}); 
+        final ListAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item, 
+                getContentResolver().query(Uri.withAppendedPath(PersonProvider.URI_PERSON_SEARCH_PREFIX, query), null, null, null, null), 
+                new String[] {"shortname", "longname"}, 
+                new int[] {android.R.id.text1, android.R.id.text2}, 0); 
         setListAdapter(adapter);
     }
 }

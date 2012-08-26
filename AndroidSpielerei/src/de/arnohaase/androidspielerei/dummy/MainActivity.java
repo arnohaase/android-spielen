@@ -1,4 +1,4 @@
-package de.arnohaase.androidspielerei;
+package de.arnohaase.androidspielerei.dummy;
 
 import android.app.Activity;
 import android.app.SearchManager;
@@ -12,7 +12,11 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
-import de.arnohaase.androidspielerei.person.PersonService;
+import de.arnohaase.androidspielerei.PersonListActivity;
+import de.arnohaase.androidspielerei.R;
+import de.arnohaase.androidspielerei.R.id;
+import de.arnohaase.androidspielerei.R.layout;
+import de.arnohaase.androidspielerei.R.menu;
 
 
 public class MainActivity extends Activity {

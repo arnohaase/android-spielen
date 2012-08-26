@@ -1,4 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_search"
+        android:title="search persons"
+        android:icon="@android:drawable/ic_menu_search"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:actionViewClass="android.widget.SearchView"
+        />
     <item android:id="@+id/menu_person_new"
         android:title="@string/menu_person_new"
         android:icon="@android:drawable/ic_menu_add"

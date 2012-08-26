@@ -1,4 +1,4 @@
-package de.arnohaase.androidspielerei.person;
+package de.arnohaase.androidspielerei.dummy;
 
 import android.app.Activity;
 import android.app.IntentService;

@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".dummy.MainActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,7 @@
             android:label="@string/title_activity_persondetails" >
         </activity>
         
-        <activity android:name=".PersonSearchActivity" >
+        <activity android:name=".dummy.PersonSearchActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -40,7 +40,12 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <service android:name=".person.PersonService" >
+        <provider
+            android:name=".provider.PersonProvider"
+            android:authorities="de.arnohaase.androidspielerei.provider.PersonProvider" 
+            />
+        
+        <service android:name=".dummy.PersonService" >
         </service>
     </application>
 

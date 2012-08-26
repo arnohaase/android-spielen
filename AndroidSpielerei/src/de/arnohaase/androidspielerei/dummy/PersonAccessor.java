@@ -1,4 +1,4 @@
-package de.arnohaase.androidspielerei.person;
+package de.arnohaase.androidspielerei.dummy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +11,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 
+import de.arnohaase.androidspielerei.person.Person;
+import de.arnohaase.androidspielerei.person.PersonConstants;
+import de.arnohaase.androidspielerei.person.Sex;
 import de.arnohaase.androidspielerei.util.AndroidFutureTask;
 import de.arnohaase.androidspielerei.util.AsyncOperationFinishedListener;
 
@@ -38,11 +41,11 @@ public class PersonAccessor {
             p.setFirstname(male ? "Arno " + idx : "Testa" + idx);
             p.setLastname(male ? "Haase" : "Testarossa");
             p.setSex(male ? Sex.m : Sex.f);
-            p.getAddress().setStreet("Sesame Street");
-            p.getAddress().setNo("" + idx);
-            p.getAddress().setZip("12345");
-            p.getAddress().setCity("Dodge City");
-            p.getAddress().setCountry("Germany");
+            p.setStreet("Sesame Street");
+            p.setNo("" + idx);
+            p.setZip("12345");
+            p.setCity("Dodge City");
+            p.setCountry("Germany");
 
             allPersons.put(Long.valueOf(idx), result);
         }
@@ -83,7 +86,7 @@ public class PersonAccessor {
     private boolean doSavePerson(Map<String, Object> data) {
         simulateDelay();
         
-        final Long oid = (Long) data.get(Person.KEY_OID);
+        final Long oid = (Long) data.get(PersonConstants.COL_OID);
         allPersons.put(oid, data);
         
         return true;
@@ -110,7 +113,7 @@ public class PersonAccessor {
                 final SortedSet<String> candidates = new TreeSet<String>(Arrays.asList("Germany", "Georgia", "Gibraltar", "Great Britian", "France"));
                 
                 for (Map<String, Object> person: doFindAllPersons()) {
-                    final CharSequence country = new Person(person).getAddress().getCountry();
+                    final CharSequence country = new Person(person).getCountry();
                     if (country != null) {
                         candidates.add(String.valueOf(country));
                     }
