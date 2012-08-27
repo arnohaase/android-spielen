@@ -41,7 +41,7 @@ public class MapWithSynthetics<K,V> implements Map<K,V> {
 	public Set<Map.Entry<K, V>> entrySet() {
 	    final Set<Map.Entry<K, V>> result = new HashSet<Map.Entry<K, V>>(inner.entrySet ());
 	    for (final Map.Entry<K, Expression<K,V>> e: synthetics.entrySet()) {
-	        result.add(new Map.Entry<K, V> () { //TODO create named inner class
+	        result.add(new Map.Entry<K, V> () {
                 public K getKey() {
                     return e.getKey();
                 }

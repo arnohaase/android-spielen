@@ -25,7 +25,7 @@ public class PersonSearchActivity extends ListActivity {
 
     private void doMySearch(String query) {
         final ListAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item, 
-                getContentResolver().query(Uri.withAppendedPath(PersonProvider.URI_PERSON_SEARCH_PREFIX, query), null, null, null, null), 
+                getContentResolver().query(Uri.withAppendedPath(PersonProvider.URI_PERSON_SEARCH, query), null, null, null, null), 
                 new String[] {"shortname", "longname"}, 
                 new int[] {android.R.id.text1, android.R.id.text2}, 0); 
         setListAdapter(adapter);

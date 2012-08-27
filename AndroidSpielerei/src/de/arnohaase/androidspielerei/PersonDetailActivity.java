@@ -1,33 +1,24 @@
 package de.arnohaase.androidspielerei;
 
-import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
-import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.arnohaase.androidspielerei.person.Person;
-import de.arnohaase.androidspielerei.person.PersonConstants;
-import de.arnohaase.androidspielerei.person.Sex;
 import de.arnohaase.androidspielerei.provider.PersonProvider;
 
 
-public class PersonDetailActivity extends Activity implements PersonConstants {
+public class PersonDetailActivity extends AbstractPersonDetailActivity {
     public static final String KEY_EXTRA_ID = "oid"; 
-    
-    private ArrayAdapter<Sex> sexAdapter;
     
     private static final String[] PROJECTION = new String[] {
         COL_OID, COL_FIRSTNAME, COL_LASTNAME, COL_SEX, COL_ADDR_STREET, COL_ADDR_NO, COL_ADDR_ZIP, COL_ADDR_CITY, COL_ADDR_COUNTRY
@@ -66,7 +57,6 @@ public class PersonDetailActivity extends Activity implements PersonConstants {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        sexAdapter = new ArrayAdapter<Sex>(this, android.R.layout.simple_spinner_dropdown_item);
         getLoaderManager().initLoader(0, null, personLoadedCallbacks);
     }
 
@@ -84,20 +74,19 @@ public class PersonDetailActivity extends Activity implements PersonConstants {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
         case R.id.menu_person_save:
+            //TODO enable save action only if the data was actually changed
             final ContentValues values = guiToData();
 
             new AsyncTask<ContentValues, Object, Integer>() {
                 @Override
                 protected Integer doInBackground(ContentValues... params) {
-                    final int result = getContentResolver().update(ContentUris.withAppendedId(PersonProvider.URI_PERSON_SINGLE, getPersonId()), values, null, null);
-                    
-                    //TODO move this broadcast into PersonProvider
-                    LocalBroadcastManager.getInstance(PersonDetailActivity.this).sendBroadcast(new Intent(PersonListActivity.INTENT_ACTION_PERSON_LIST_CHANGED));
-                    finish();
-                    return result;
+                    return getContentResolver().update(ContentUris.withAppendedId(PersonProvider.URI_PERSON_SINGLE, getPersonId()), values, null, null);
                 }
                 
                 protected void onPostExecute(Integer result) {
+                    if (result > 0) {
+                        finish();
+                    }
                     Toast.makeText(PersonDetailActivity.this, getMessage(result), Toast.LENGTH_SHORT).show();
                 }
                 
@@ -111,39 +100,31 @@ public class PersonDetailActivity extends Activity implements PersonConstants {
             
             break;
         case R.id.menu_person_delete:
-            //TODO implement 'delete'
-            
-//            new PersonAccessor(ExecutorHelper.createMainThreadExecutor(this)).deletePerson((Long) data.get(COL_OID), new AsyncOperationFinishedListener<Boolean>() {
-//                public void onSuccess(Boolean result) {
-//                    Toast.makeText(PersonDetailActivity.this, "Person deleted: " + data.get(COL_FIRSTNAME) + " " + data.get(COL_LASTNAME), Toast.LENGTH_SHORT).show();
-//                    //TODO action bar notification instead
-//                    
-//                    LocalBroadcastManager.getInstance(PersonDetailActivity.this).sendBroadcast(new Intent(PersonListActivity.INTENT_ACTION_PERSON_LIST_CHANGED));
-//                    finish();
-//                }
-//                
-//                public void onFailure(Exception reason) {
-//                    //TODO i18n for toasts
-//                    Toast.makeText(PersonDetailActivity.this, "Failed to delete person: " + data.get(COL_FIRSTNAME) + " " + data.get(COL_LASTNAME), Toast.LENGTH_SHORT).show();
-//                }
-//                
-//                public void onCancelled() {
-//                }
-//            });
-//            
+            //TODO add confirmation dialog
+            new AsyncTask<Long, Object, Integer>() {
+                @Override
+                protected Integer doInBackground(Long... oids) {
+                    return getContentResolver().delete(ContentUris.withAppendedId(PersonProvider.URI_PERSON_SINGLE, getPersonId()), null, null);
+                }
+                
+                protected void onPostExecute(Integer result) {
+                    if (result > 0) {
+                        finish();
+                    }
+                    Toast.makeText(PersonDetailActivity.this, getMessage(result), Toast.LENGTH_SHORT).show();
+                }
+                
+                private String getMessage(int result) {
+                    switch(result) {
+                    case 1:  return "deleted person.";
+                    default: return "failed to delete person.";
+                    }
+                }
+            }.execute(getPersonId());
+
             break;
         }
         return true;
-    }
-    
-    private void initWidgets() {
-        final Spinner spinner = (Spinner) findViewById(R.id.sex);
-        sexAdapter.add(Sex.m);
-        sexAdapter.add(Sex.f);
-        spinner.setAdapter(sexAdapter);
-
-        AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.country);
-        textView.setAdapter(new PersonCountryAutocompleteAdapter(this));
     }
     
     private TextView findTextView(int id) {
@@ -152,21 +133,5 @@ public class PersonDetailActivity extends Activity implements PersonConstants {
     
     private Spinner findSpinner(int id) {
         return (Spinner) findViewById(id);
-    }
-    
-    private ContentValues guiToData() {
-        final ContentValues result = new ContentValues();
-
-        result.put(COL_FIRSTNAME, String.valueOf(findTextView(R.id.firstname).getText()));
-        result.put(COL_LASTNAME, String.valueOf(findTextView(R.id.lastname).getText()));
-        result.put(COL_SEX, ((Sex) (findSpinner(R.id.sex).getSelectedItem())).name());
-
-        result.put(COL_ADDR_STREET, String.valueOf(findTextView(R.id.street).getText()));
-        result.put(COL_ADDR_NO, String.valueOf(findTextView(R.id.streetnumber).getText()));
-        result.put(COL_ADDR_ZIP,  String.valueOf(findTextView(R.id.zip).getText()));
-        result.put(COL_ADDR_CITY, String.valueOf(findTextView(R.id.city).getText()));
-        result.put(COL_ADDR_CITY, String.valueOf(findTextView(R.id.country).getText()));
-        
-        return result;
     }
 }

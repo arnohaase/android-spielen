@@ -29,6 +29,10 @@
             android:name=".PersonDetailActivity"
             android:label="@string/title_activity_persondetails" >
         </activity>
+        <activity
+            android:name=".PersonNewActivity"
+            android:label="@string/title_activity_personnew" >
+        </activity>
         
         <activity android:name=".dummy.PersonSearchActivity" >
             <intent-filter>

@@ -24,6 +24,7 @@ todo
   * nur Google Maps oder auch anderer (offline?) Provider?
 * Authentication (!)
 * Activity.onCreateOptionsMenu: "implementations should always call through to the default implementation" --> ?!?!?
+* PersonDataSource per 'Einstellungen' konfigurieren
 
 * StatusBar notifications --> file:///home/arno/libs/android-sdk-linux/docs/guide/topics/ui/notifiers/notifications.html
 

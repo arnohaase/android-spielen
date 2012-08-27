@@ -13,8 +13,9 @@
     <string name="menu_person_delete">Delete Person</string>
     <string name="menu_personlist_refresh">Refresh</string>
 
-    <string name="title_activity_personlist">Personen</string>
+    <string name="title_activity_personlist">Persons</string>
     <string name="title_activity_persondetails">Person</string>
+    <string name="title_activity_personnew">New Person</string>
     
     <string name="lbl_person_firstname">First Name</string>
     <string name="lbl_person_lastname">Last Name</string>

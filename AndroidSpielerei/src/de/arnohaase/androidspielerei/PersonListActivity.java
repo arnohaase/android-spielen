@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -24,8 +25,6 @@ import de.arnohaase.androidspielerei.provider.PersonProvider;
 
 
 public class PersonListActivity extends ListActivity { // implements LoaderManager.LoaderCallbacks<Cursor> {
-    public static final String INTENT_ACTION_PERSON_LIST_CHANGED = "PERSON_LIST_CHANGED";
-
     private boolean requiresRefresh=false;
 
     private final BroadcastReceiver personListChangedReceiver = new BroadcastReceiver() {
@@ -43,7 +42,12 @@ public class PersonListActivity extends ListActivity { // implements LoaderManag
 
     final LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor> () {
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-            return new CursorLoader(PersonListActivity.this, Uri.withAppendedPath(PersonProvider.URI_PERSON_SEARCH_PREFIX, mCurSearchText), null, null, null, null);
+            Uri uri = PersonProvider.URI_PERSON_SEARCH;
+            if (! TextUtils.isEmpty(mCurSearchText)) {
+                uri = Uri.withAppendedPath(uri, mCurSearchText);
+            }
+            
+            return new CursorLoader(PersonListActivity.this, uri, null, null, null, null);
         }
 
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -76,7 +80,7 @@ public class PersonListActivity extends ListActivity { // implements LoaderManag
         getLoaderManager().initLoader(0, null, loaderCallbacks);
 
         final IntentFilter personListChangedFilter = new IntentFilter();
-        personListChangedFilter.addAction(INTENT_ACTION_PERSON_LIST_CHANGED);
+        personListChangedFilter.addAction(PersonProvider.INTENT_ACTION_PERSON_LIST_CHANGED);
         LocalBroadcastManager.getInstance(this).registerReceiver(personListChangedReceiver, personListChangedFilter);
     }
 
@@ -130,11 +134,26 @@ public class PersonListActivity extends ListActivity { // implements LoaderManag
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+        case R.id.menu_person_new:
+            final Intent intent = new Intent();
+            intent.setClass(this, PersonNewActivity.class);
+            startActivity(intent);
+            return true;
+        case R.id.menu_personlist_refresh:
+            requiresRefresh = true;
+            doRefreshIfRequired();
+            return true;
+        default: return true;
+        }
+    }
+
     protected void onListItemClick(ListView l, View v, int position, long id) {
         final Intent intent = new Intent();
         intent.setClass(this, PersonDetailActivity.class);
-        //TODO
-        intent.putExtra(PersonDetailActivity.KEY_EXTRA_ID, id); //l.get(Serializable) ((MapWithSynthetics<String, Object>) l.getItemAtPosition(position)).getInner());
+        intent.putExtra(PersonDetailActivity.KEY_EXTRA_ID, id); 
         startActivity(intent);
     }
 }
